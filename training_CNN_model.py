@@ -104,12 +104,12 @@ class TinyVGG(nn.Module):
     
     def forward(self, x):
         x = self.conv_block_1(x)
-        print(x.shape)
+        # print(x.shape)
         x = self.conv_block_2(x)
-        print(x.shape)
+        # print(x.shape)
         x = self.classifier(x)
-        print(x.shape)
-        print(x)
+        # print(x.shape)
+        # print(x)
         return x
     
 class_names = train_data_model_0_simple.classes
@@ -118,6 +118,14 @@ torch.manual_seed(42)
 model_0 = TinyVGG(3, 10, len(class_names)).to(device)
 print(model_0)
 
-image_batch, abel_batch = next(iter(train_dataloader_simple))
+image_batch, label_batch = next(iter(train_dataloader_simple))
 
 model_0(image_batch.to(device))
+print("########################################")
+
+# using torchinfo to get the info of shapes while data goes through the model
+from torchinfo import summary
+summary(model_0, input_size=[32, 3, 64, 64])
+
+
+# creating functions to train and test the model
