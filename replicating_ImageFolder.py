@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import torch
 from PIL import Image
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from typing import Tuple, Dict, List
 import random
@@ -137,4 +137,42 @@ display_random_image(train_data_custom,
 
 
 ### turning data into DataLoaders
+BATCH_SIZE = 32
+train_dataloader_custom = DataLoader(dataset=train_data_custom,
+                                     batch_size=BATCH_SIZE,
+                                     shuffle=True)
 
+test_dataloader_custom = DataLoader(dataset=test_data_custom,
+                                    batch_size=BATCH_SIZE,
+                                    shuffle=False)
+
+img_custom, label_custom = next(iter(train_dataloader_custom))
+
+print(img_custom.shape)
+print(label_custom.shape)
+
+
+# data augmentation -   looking at the same image but from different perspective to artifically increase 
+#                       the diversity of a dataset
+
+# we will look at trivialaugment
+train_transform = transforms.Compose([
+    transforms.Resize(size=(224, 224)),
+    transforms.TrivialAugmentWide(num_magnitude_bins=31),
+    transforms.ToTensor()
+])
+
+test_transform = transforms.Compose([
+    transforms.Resize(size=(224, 224)),
+    transforms.ToTensor()
+])
+
+# get all image paths
+image_path_list = list(image_path.glob("*/*/*.jpg"))
+
+# plot random transformed images
+from images_into_tensors import plot_transformed_images
+plot_transformed_images(image_paths=image_path_list,
+                        transform=train_transform,
+                        n=3,
+                        seed=None)
