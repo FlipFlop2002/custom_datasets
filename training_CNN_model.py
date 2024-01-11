@@ -277,5 +277,16 @@ def plot_loss_curves(results: dict[str, list[float]]):
 plot_loss_curves(model_0_results)
 
 import json
-with open('models_results/model_0_results.json', 'w') as jh:
-    json.dump(model_0_results, jh)
+if os.path.exists('models_results/model_0_results.json'):
+    print("Model results already saved!")
+else:
+    print("Saving model results")
+    with open('models_results/model_0_results.json', 'w') as jh:
+        json.dump(model_0_results, jh)
+
+if os.path.exists('models/model_0.pth'):
+    print("Model dict already saved!")
+else:
+    print("Saving model dict")
+    torch.save(model_0.state_dict(), "models/model_0.pth")
+

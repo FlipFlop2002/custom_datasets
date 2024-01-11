@@ -79,5 +79,16 @@ print(f"Total training time {end_time-start_time:.3f} seconds.")
 plot_loss_curves(model_1_results)
 
 import json
-with open('models_results/model_1_results.json', 'w') as jh:
-    json.dump(model_1_results, jh)
+if os.path.exists('models_results/model_1_results.json'):
+    print("Model results already saved!")
+else:
+    print("Saving model results...")
+    with open('models_results/model_1_results.json', 'w') as jh:
+        json.dump(model_1_results, jh)
+
+
+if os.path.exists('models/model_1.pth'):
+    print("Model dict already saved!")
+else:
+    print("Saving model dict")
+    torch.save(model_1.state_dict(), "models/model_1.pth")
