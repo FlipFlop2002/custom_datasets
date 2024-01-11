@@ -77,3 +77,7 @@ end_time = timer()
 print(f"Total training time {end_time-start_time:.3f} seconds.")
 
 plot_loss_curves(model_1_results)
+
+import json
+with open('models_results/model_1_results.json', 'w') as jh:
+    json.dump(model_1_results, jh)
